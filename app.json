@@ -1,0 +1,17 @@
+{
+  "name": "KidsKampas",
+  "displayName": "KidsKampas",
+  "expo": {
+    "name": "KidsKampas",
+    "slug": "KidsKampas",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
