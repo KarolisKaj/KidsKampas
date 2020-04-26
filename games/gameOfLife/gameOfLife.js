@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
-import Cell from './cell';
-import MakeTurn from './logic'
+import Cell from './gameOfLifeCell';
+import MakeTurn from './gameOfLifeLogic'
 
 
 function generateBoard(size) {
     let board = []
-    for (i = 0; i < size; i++) {
+    for (let i = 0; i < size; i++) {
         board.push([])
-        for (j = 0; j < size; j++) {
-            board[i].push((<Cell key={`${i}${j}`} isAlive={(j + i) % 2 === 0}></Cell>))
+        for (let j = 0; j < size; j++) {
+            let cellRef = React.createRef()
+            board[i].push({ element: (<Cell key={`x${i}y${j}`} isAlive={Math.floor(Math.random() * 11) % 2 === 0} ref={cellRef}></Cell>), ref: cellRef })
         }
     }
     return board
@@ -19,22 +20,25 @@ export default class GameOfLife extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            boardState: generateBoard(10),
-            isSpinning: false
+            boardState: generateBoard(20),
+            isSpinning: true
         }
-        this.startSpining()
+        window.requestAnimationFrame(this.startSpining.bind(this));
+    }
+
+    componentWillUnmount() {
+        this.stopSpinning()
     }
 
     startSpining() {
-        this.state.isSpinning = true
-        while (this.state.isSpinning) {
+        if (this.state.isSpinning === true) {
             MakeTurn(this.state.boardState)
+            window.requestAnimationFrame(this.startSpining.bind(this))
         }
     }
     stopSpinning() {
         this.state.isSpinning = false
     }
-
 
     render() {
         return (
@@ -43,7 +47,9 @@ export default class GameOfLife extends Component {
                     <Text>Game of life</Text>
                 </View>
                 <View style={styles.boardContainer}>
-                    {this.state.boardState.map(cells => (<View style={styles.textContainer}>{cells}</View>))}
+                    {
+                        this.state.boardState.map((column) => (<View style={styles.textContainer}>{column.map(cell => cell.element)}</View>))
+                    }
                 </View>
             </View>
         );
@@ -63,7 +69,5 @@ const styles = StyleSheet.create({
         flex: 9,
         flexDirection: 'row',
         alignItems: 'stretch'
-    },
-    cell: {
     }
 })

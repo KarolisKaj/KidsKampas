@@ -9,10 +9,10 @@ export default class Cell extends Component {
         };
     }
 
-    toggleDeath = () => {
-        this.setState({ isAlive: !this.isAlive })
+    toggleDeath() {
+        this.setState({ isAlive: !this.state.isAlive })
     }
-    getStyle = () => {
+    getStyle() {
         let color = this.state.isAlive ? 'white' : 'black';
         return {
             backgroundColor: color,

@@ -10,6 +10,7 @@ function Home({ navigation }) {
             <View style={styles.emptySpace}></View>
             <View style={styles.gamesContainer}>
                 <Button title="Game of Life" onPress={() => navigation.navigate('GameOfLife')}></Button>
+                <Button title="Card Match" onPress={() => navigation.navigate('CardMatch')}></Button>
             </View>
         </View>
     );
