@@ -4,14 +4,10 @@ import CardMatchBoard from './cardMatchBoard.js'
 
 
 export default class CardMatch extends Component {
-    constructor(navigation) {
-        this.state = {
-            navigation: navigation
-        }
-    }
 
     gameFinished() {
-        this.state.navigation.navigate('CardMatch')
+        console.log("navigation called")
+        this.props.navigation.navigate('CardMatch')
     }
 
     render() {
@@ -21,7 +17,7 @@ export default class CardMatch extends Component {
                     <Text>Card Game</Text>
                 </View>
                 <View style={styles.boardContainer}>
-                    <CardMatchBoard flipDelay={750} onFinished={gameFinished.bind(this)}></CardMatchBoard>
+                    <CardMatchBoard flipDelay={750} onFinished={this.gameFinished.bind(this)}></CardMatchBoard>
                 </View>
             </View>
         )

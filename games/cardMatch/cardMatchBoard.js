@@ -46,9 +46,16 @@ export default class CardMatchBoard extends Component {
             if (displayValue === this.state.cardFlipped.state.displayValue && this.state.cardFlipped.state.id !== id) {
                 card.lockCard()
                 this.state.cardFlipped.lockCard()
-                this.setState({ cardFlipped: undefined })
-                if (this.state.board.every(row => row.every(c => c.ref.state.locked)))
-                    this.state.onFinished()
+                this.setState({ cardFlipped: undefined }, () => {
+                    if (this.state.board.every(row => row.every(c => c.ref.current.state.locked))) {
+                        console.log("found")
+                        this.state.onFinished()
+                    }
+                })
+
+
+
+
             }
             else {
                 this.state.boardLocked = true;
