@@ -23,18 +23,42 @@ function generateBoard(size, notifyFlipped) {
 export default class CardMatchBoard extends Component {
     constructor(props) {
         super(props)
-        let boardSize = 4
+        let boardSize = 2
         this.state = {
             boardSize: boardSize,
-            board: generateBoard(boardSize, this.handleCardInteraction),
-            cardsFlipped: []
+            board: generateBoard(boardSize, this.handleCardInteraction.bind(this)),
+            cardFlipped: undefined,
+            boardLocked: false,
+            flipDelay: props.flipDelay,
+            onFinished: props.onFinished,
         }
     }
 
-    handleCardInteraction(displayValue, id, isFlipped) {
-        if (isFlipped && cardsFlipped.length === 1) {
-            let cardFlippedExisting = this.state.cardsFlipped.find(x => x.ref.state.displayValue === displayValue)
-            let cardFlipped = this.state.board.find(x => x.ref.state.id === id)
+    handleCardInteraction(displayValue, id, isFlipped, card) {
+        if (this.state.boardLocked && isFlipped) {
+            card.flipCard()
+            return
+        }
+        if (isFlipped && this.state.cardFlipped === undefined) {
+            this.setState({ cardFlipped: card })
+        }
+        else if (isFlipped && this.state.cardFlipped) {
+            if (displayValue === this.state.cardFlipped.state.displayValue && this.state.cardFlipped.state.id !== id) {
+                card.lockCard()
+                this.state.cardFlipped.lockCard()
+                this.setState({ cardFlipped: undefined })
+                if (this.state.board.every(row => row.every(c => c.ref.state.locked)))
+                    this.state.onFinished()
+            }
+            else {
+                this.state.boardLocked = true;
+                setTimeout(function () {
+                    this.state.cardFlipped.flipCard()
+                    card.flipCard()
+                    this.setState({ cardFlipped: undefined })
+                    this.state.boardLocked = false
+                }.bind(this), this.state.flipDelay);
+            }
 
         }
     }
@@ -52,10 +76,13 @@ const styles = StyleSheet.create({
     boardContainer: {
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'stretch'
+        alignItems: 'stretch',
+        justifyContent: 'space-around'
+
     },
     rowContainer: {
         flex: 1,
-        alignItems: 'stretch'
+        alignItems: 'stretch',
+        justifyContent: 'space-around'
     },
 })
