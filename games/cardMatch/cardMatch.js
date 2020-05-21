@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from "react-native";
 import CardMatchBoard from './cardMatchBoard.js'
-
+import * as Animatable from 'react-native-animatable';
 
 export default class CardMatch extends Component {
-
+    constructor(props) {
+        super(props)
+        this.state = {
+            hasFinished: false
+        };
+    }
     gameFinished() {
-        console.log("navigation called")
-        this.props.navigation.navigate('CardMatch')
+
+        setTimeout(function () { this.setState({ hasFinished: true }) }.bind(this), 1000);
+        setTimeout(function () { this.props.navigation.navigate('GameOfLife') }.bind(this), 5000);
+        setTimeout(function () { this.props.navigation.navigate('Home') }.bind(this), 10000);
     }
 
     render() {
@@ -17,8 +24,11 @@ export default class CardMatch extends Component {
                     <Text>Card Game</Text>
                 </View>
                 <View style={styles.boardContainer}>
-                    <CardMatchBoard flipDelay={750} onFinished={this.gameFinished.bind(this)}></CardMatchBoard>
+                    <CardMatchBoard flipDelay={2000} onFinished={this.gameFinished.bind(this)}></CardMatchBoard>
                 </View>
+                {this.state.hasFinished && <View style={styles.center}>
+                    <Animatable.Text style={styles.victoryText} animation="pulse" easing="ease-out" iterationCount="infinite" >You won!</Animatable.Text>
+                </View>}
             </View>
         )
     }
@@ -37,5 +47,16 @@ const styles = StyleSheet.create({
         flex: 9,
         flexDirection: 'row',
         alignItems: 'stretch'
+    },
+    center: {
+        position: 'absolute',
+        top: 0, left: 0,
+        right: 0, bottom: 0,
+        backgroundColor: 'rgba(245, 215, 110, 0.7)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    victoryText: {
+        fontSize: 32
     }
 })
