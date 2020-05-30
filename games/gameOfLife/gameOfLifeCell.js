@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
+import colorStyles from '../../styles/colorStyles'
 
 export default class Cell extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ export default class Cell extends Component {
         this.setState({ isAlive: !this.state.isAlive })
     }
     getStyle() {
-        let color = this.state.isAlive ? 'white' : 'black';
+        let color = this.state.isAlive ? colorStyles.lowerIntenseColor : colorStyles.intenseColor;
         return {
             backgroundColor: color,
         }
@@ -31,6 +32,6 @@ const styles = StyleSheet.create({
     cell: {
         flex: 1,
         borderWidth: 1,
-        borderColor: 'pink'
+        borderColor: colorStyles.lowIntenseColor
     }
 });

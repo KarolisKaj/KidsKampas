@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from "react-native";
 import CardMatchBoard from './cardMatchBoard.js'
 import * as Animatable from 'react-native-animatable';
+import colorStyles from '../../styles/colorStyles'
 
 export default class CardMatch extends Component {
     constructor(props) {
@@ -37,8 +38,9 @@ export default class CardMatch extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'stretch'
-    },
+        alignItems: 'stretch',
+        backgroundColor: colorStyles.lowIntenseColor
+     },
     textContainer: {
         flex: 1,
         alignItems: 'center'
@@ -52,7 +54,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0, left: 0,
         right: 0, bottom: 0,
-        backgroundColor: 'rgba(245, 215, 110, 0.7)',
+        backgroundColor: colorStyles.lowIntenseColor,
         justifyContent: 'center',
         alignItems: 'center',
     },

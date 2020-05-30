@@ -23,7 +23,7 @@ function generateBoard(size, notifyFlipped) {
 export default class CardMatchBoard extends Component {
     constructor(props) {
         super(props)
-        let boardSize = 2
+        let boardSize = 4
         this.state = {
             boardSize: boardSize,
             board: generateBoard(boardSize, this.handleCardInteraction.bind(this)),

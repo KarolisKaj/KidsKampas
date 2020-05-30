@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from './views/home'
 import GameOfLife from './games/gameOfLife/gameOfLife.js'
 import CardMatch from './games/cardMatch/cardMatch';
+import TouchHand from './games/touchHand/touchHand';
 
 const instructions = Platform.select({
   ios: `Press Cmd+R to reload,\nCmd+D or shake for dev menu`,
@@ -29,6 +30,10 @@ export default function App() {
         <Stack.Screen
           name="CardMatch"
           component={CardMatch}
+        />
+        <Stack.Screen
+          name="TouchHand"
+          component={TouchHand}
         />
       </Stack.Navigator>
     </NavigationContainer>

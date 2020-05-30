@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button, TouchableWithoutFeedback, TouchableOpacity, Animated } from 'react-native';
 import CardFlip from 'react-native-card-flip';
+import colorStyles from '../../styles/colorStyles'
 
 export default class Card extends Component {
     constructor(props) {
@@ -28,8 +29,8 @@ export default class Card extends Component {
     render() {
         return (
             <CardFlip style={styles.cardContainer} ref={(card) => this.card = card} >
-                <TouchableOpacity style={styles.openedCard} onPress={() => this.flipCard()} ><Text>Open me!</Text></TouchableOpacity>
-                <TouchableOpacity style={styles.closedCard} ><Text>{this.state.displayValue}</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.closedCard} onPress={() => this.flipCard()} ><Text style={{color: colorStyles.lowIntenseColor}}>Open me!</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.openedCard} ><Text>{this.state.displayValue}</Text></TouchableOpacity>
             </CardFlip>
         );
     }
@@ -45,12 +46,12 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'lightblue',
+        backgroundColor: colorStyles.lowerIntenseColor
     },
     closedCard: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'yellow'
+        backgroundColor: colorStyles.mediumIntenseColor
     }
 })

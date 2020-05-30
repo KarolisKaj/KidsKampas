@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Cell from './gameOfLifeCell';
 import MakeTurn from './gameOfLifeLogic'
+import colorStyles from '../../styles/colorStyles'
 
 
 function generateBoard(size) {
@@ -59,7 +60,8 @@ export default class GameOfLife extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: colorStyles.lowIntenseColor
     },
     textContainer: {
         flex: 1,

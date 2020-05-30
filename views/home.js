@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
+import colorStyles from '../styles/colorStyles'
 
 function Home({ navigation }) {
     return (
@@ -9,8 +10,9 @@ function Home({ navigation }) {
             </View>
             <View style={styles.emptySpace}></View>
             <View style={styles.gamesContainer}>
-                <Button title="Game of Life" onPress={() => navigation.navigate('GameOfLife')}></Button>
-                <Button title="Card Match" onPress={() => navigation.navigate('CardMatch')}></Button>
+                <Button color={colorStyles.mediumIntenseColor} title="Game of Life" onPress={() => navigation.navigate('GameOfLife')}></Button>
+                <Button color={colorStyles.mediumIntenseColor} title="Card Match" onPress={() => navigation.navigate('CardMatch')}></Button>
+                <Button color={colorStyles.mediumIntenseColor} title="Touch Hand" onPress={() => navigation.navigate('TouchHand')}></Button>
             </View>
         </View>
     );
@@ -19,7 +21,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 40,
-        backgroundColor: '#92bf3f',
+        backgroundColor: colorStyles.lowIntenseColor,
     },
     textContainer: {
         flex: 1,
