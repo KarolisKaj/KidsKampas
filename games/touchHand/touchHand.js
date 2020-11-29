@@ -1,37 +1,26 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Animated } from 'react-native';
+import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native';
 import colorStyles from '../../styles/colorStyles'
 import LottieView from 'lottie-react-native';
-import Draggable from 'react-native-draggable';
-import { GestureHandler } from 'expo';
-import {
-    PanGestureHandler,
-    PinchGestureHandler,
-    RotationGestureHandler,
-    ScrollView,
-    State,
-} from 'react-native-gesture-handler';
+import { PinchGestureHandler, State } from 'react-native-gesture-handler';
 
 export default class TouchHand extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            initialHeight: 0,
+            windowWidth: Dimensions.get('window').width,
+            windowHeight: Dimensions.get('window').height,
         }
     }
+
     componentDidMount() {
         this.startTouchTop()
         this.startTouchBottom()
-        // this.startGlowing()
+        console.log(this.state.windowWidth)
+        console.log(this.state.windowHeight)
     }
 
-    // startGlowing() {
-    //     this.glowAnimation.play();
-    // }
-
-    // endGlow() {
-    //     this.glowAnimation.play(34, 34);
-    //     this.glowAnimation.pause();
-    // }
     startTouchTop() {
         this.touchAnimationTop.play();
     }
@@ -40,6 +29,7 @@ export default class TouchHand extends Component {
         this.touchAnimationTop.play(300, 300);
         this.touchAnimtouchAnimationTopation.pause();
     }
+
     startTouchBottom() {
         this.touchAnimationBottom.play();
     }
@@ -49,33 +39,34 @@ export default class TouchHand extends Component {
         this.touchAnimationBottom.pause();
     }
 
-    _onPinchHandlerStateChange = event => {
-        if (event.nativeEvent.oldState === State.ACTIVE) {
+    onPinchHandlerStateChange = event => {
+        if (event.nativeEvent.oldState === State.ACTIVE && event.nativeEvent.numberOfPointers === 2) {
 
         }
-        console.log(event)
+        // console.log(this.spacerElement)
+        console.log(event.nativeEvent)
     };
 
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.textContainer}>
-                    <Text style={{ textAlign: 'center' }}>Touch Hand</Text>
+                    <Text>Touch Hand</Text>
                 </View>
                 <View style={styles.contentContainer}>
                     <PinchGestureHandler
-                        onHandlerStateChange={this._onPinchHandlerStateChange}>
-                        <View style={[styles.contentContainer]} >
+                        onHandlerStateChange={this.onPinchHandlerStateChange}>
+                        <Animated.View style={styles.pinchableContent} >
                             <View style={styles.upperFingerContainer}>
-                                <LottieView style={{ flex: 1, marginTop: 20, maxHeight: 125, minHeight: 125 }} source={require('../../styles/animations/touch/finger-scan.json')}
+                                <LottieView style={{ flex: 1, marginTop: 20, maxHeight: 125, minHeight: 125, width: 125 }} source={require('../../styles/animations/touch/finger-scan.json')}
                                     ref={touchAnimationTop => { this.touchAnimationTop = touchAnimationTop; }} />
                             </View>
-                            <Animated.View style={{ ...styles.spacerContent, flex: 9 }} />
+                            <View ref={spacerElement => this.spacerElement = spacerElement} style={{ ...styles.spacerContent }} />
                             <View style={styles.lowerFingerContainer}>
-                                <LottieView style={{ flex: 1, marginTop: -20, maxHeight: 125, minHeight: 125 }} source={require('../../styles/animations/touch/finger-scan.json')}
+                                <LottieView style={{ flex: 1, marginTop: -20, maxHeight: 125, minHeight: 125, width: 125 }} source={require('../../styles/animations/touch/finger-scan.json')}
                                     ref={touchAnimationBottom => { this.touchAnimationBottom = touchAnimationBottom; }} />
                             </View>
-                        </View>
+                        </Animated.View>
                     </PinchGestureHandler>
                 </View>
             </View >
@@ -87,30 +78,29 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colorStyles.lowIntenseColor,
-        alignItems: 'stretch',
     },
     textContainer: {
         flex: 1,
-        alignItems: 'stretch',
+        alignItems: 'center',
+    },
+    contentContainer: {
+        flex: 9,
+        alignItems: 'center',
     },
     upperFingerContainer: {
         flex: 1,
         backgroundColor: 'green',
-        alignItems: 'stretch',
         flexDirection: 'column-reverse',
     },
     lowerFingerContainer: {
         flex: 1,
         backgroundColor: 'blue',
-        alignItems: 'stretch',
     },
     spacerContent: {
         flex: 8,
-        alignItems: 'stretch',
         backgroundColor: 'yellow',
     },
-    contentContainer: {
-        flex: 9,
-        alignItems: 'stretch',
+    pinchableContent: {
+        flex: 1
     }
 })
