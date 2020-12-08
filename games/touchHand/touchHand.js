@@ -2,50 +2,51 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native';
 import colorStyles from '../../styles/colorStyles'
 import LottieView from 'lottie-react-native';
-import { PinchGestureHandler, State } from 'react-native-gesture-handler';
+import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 
 export default class TouchHand extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            initialHeight: 0,
             windowWidth: Dimensions.get('window').width,
-            windowHeight: Dimensions.get('window').height,
+            pinchedCount: 0,
+            isTransition: true
         }
     }
 
     componentDidMount() {
-        this.startTouchTop()
-        this.startTouchBottom()
-        console.log(this.state.windowWidth)
-        console.log(this.state.windowHeight)
+        this.startTouch()
+        this.startTouch2();
     }
 
-    startTouchTop() {
-        this.touchAnimationTop.play();
+    startTouch() {
+        this.touchAnimation && this.touchAnimation.play();
     }
 
-    endTouchTop() {
-        this.touchAnimationTop.play(300, 300);
-        this.touchAnimtouchAnimationTopation.pause();
+    endTouch() {
+        this.touchAnimation && this.touchAnimation.play(300, 300);
+        this.touchAnimation && this.touchAnimation.pause();
     }
 
-    startTouchBottom() {
-        this.touchAnimationBottom.play();
+    startTouch2() {
+        this.touchAnimation2 && this.touchAnimation2.play();
     }
 
-    endTouchBottom() {
-        this.touchAnimationBottom.play(300, 300);
-        this.touchAnimationBottom.pause();
+    endTouch2() {
+        this.touchAnimation2 && this.touchAnimation2.play(300, 300);
+        this.touchAnimation2 && this.touchAnimation2.pause();
     }
 
-    onPinchHandlerStateChange = event => {
-        if (event.nativeEvent.oldState === State.ACTIVE && event.nativeEvent.numberOfPointers === 2) {
+    logOutZoomState(event, gestureState, zoomableViewEventObject) {
+    }
 
-        }
-        // console.log(this.spacerElement)
-        console.log(event.nativeEvent)
-    };
+    beforeZoom(event, gestureState, zoomableViewEventObject) {
+        this.setState({ isTransition: zoomableViewEventObject.zoomLevel < zoomableViewEventObject.lastZoomLevel });
+        this.startTouch();
+        this.startTouch2();
+        return true;
+    }
+
 
     render() {
         return (
@@ -54,20 +55,19 @@ export default class TouchHand extends Component {
                     <Text>Touch Hand</Text>
                 </View>
                 <View style={styles.contentContainer}>
-                    <PinchGestureHandler
-                        onHandlerStateChange={this.onPinchHandlerStateChange}>
-                        <Animated.View style={styles.pinchableContent} >
-                            <View style={styles.upperFingerContainer}>
-                                <LottieView style={{ flex: 1, marginTop: 20, maxHeight: 125, minHeight: 125, width: 125 }} source={require('../../styles/animations/touch/finger-scan.json')}
-                                    ref={touchAnimationTop => { this.touchAnimationTop = touchAnimationTop; }} />
-                            </View>
-                            <View ref={spacerElement => this.spacerElement = spacerElement} style={{ ...styles.spacerContent }} />
-                            <View style={styles.lowerFingerContainer}>
-                                <LottieView style={{ flex: 1, marginTop: -20, maxHeight: 125, minHeight: 125, width: 125 }} source={require('../../styles/animations/touch/finger-scan.json')}
-                                    ref={touchAnimationBottom => { this.touchAnimationBottom = touchAnimationBottom; }} />
-                            </View>
-                        </Animated.View>
-                    </PinchGestureHandler>
+                    <ReactNativeZoomableView
+                        maxZoom={1}
+                        minZoom={0.1}
+                        zoomStep={0.1}
+                        initialZoom={1}
+                        zoomLevel={1}
+                        bindToBorders={true}
+                        onZoomBefore={this.beforeZoom.bind(this)}
+                        onZoomAfter={this.logOutZoomState.bind(this)}>
+                        {this.state.isTransition === false ?
+                            <LottieView style={{ width: this.state.windowWidth * 1.5 }} source={require('../../styles/animations/touch/finger-scan.json')} ref={touchAnimation => { this.touchAnimation = touchAnimation; }} /> :
+                            <LottieView style={{ width: this.state.windowWidth * 1.5 }} source={require('../../styles/animations/touch/fish.json')} ref={touchAnimation2 => { this.touchAnimation2 = touchAnimation2; }} autoPlay />}
+                    </ReactNativeZoomableView>
                 </View>
             </View >
         );
@@ -84,23 +84,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     contentContainer: {
-        flex: 9,
         alignItems: 'center',
-    },
-    upperFingerContainer: {
-        flex: 1,
-        backgroundColor: 'green',
-        flexDirection: 'column-reverse',
-    },
-    lowerFingerContainer: {
-        flex: 1,
-        backgroundColor: 'blue',
-    },
-    spacerContent: {
-        flex: 8,
-        backgroundColor: 'yellow',
-    },
-    pinchableContent: {
-        flex: 1
+        flex: 9,
     }
 })
