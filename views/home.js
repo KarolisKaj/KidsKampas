@@ -8,19 +8,18 @@ function Home({ navigation }) {
             <View style={styles.textContainer}>
                 <Text style={styles.welcome}>Hello dear traveler, choose a game to play!</Text>
             </View>
-            <View style={styles.emptySpace}></View>
             <View style={styles.gamesContainer}>
-                <View color={styles.button}>
-                    <Button title="Game of Life" onPress={() => navigation.navigate('GameOfLife')}></Button>
+                <View style={styles.button}>
+                    <Button color={colorStyles.mediumIntenseColor} title="Game of Life" onPress={() => navigation.navigate('GameOfLife')}></Button>
                 </View>
-                <View color={styles.button}>
-                    <Button title="Card Match" onPress={() => navigation.navigate('CardMatch')}></Button>
+                <View style={styles.button}>
+                    <Button color={colorStyles.mediumIntenseColor} title="Card Match" onPress={() => navigation.navigate('CardMatch')}></Button>
                 </View>
-                <View color={styles.button}>
-                    <Button title="Pinch Fish" onPress={() => navigation.navigate('PinchFish')}></Button>
+                <View style={styles.button}>
+                    <Button color={colorStyles.mediumIntenseColor} title="Pinch Fish" onPress={() => navigation.navigate('PinchFish')}></Button>
                 </View>
-                <View color={styles.button}>
-                    <Button title="Sea Match" onPress={() => navigation.navigate('SeaMatch')}></Button>
+                <View style={styles.button}>
+                    <Button color={colorStyles.mediumIntenseColor} title="Sea Match" onPress={() => navigation.navigate('SeaMatch')}></Button>
                 </View>
             </View>
         </View>
@@ -33,28 +32,21 @@ const styles = StyleSheet.create({
         backgroundColor: colorStyles.lowIntenseColor,
     },
     textContainer: {
-        flex: 1,
+        flex: 0.1,
         paddingHorizontal: 10,
     },
-    emptySpace: {
-        flex: 1,
-    },
     gamesContainer: {
-        flex: 8,
+        flex: 9,
         justifyContent: 'space-around',
         alignContent: 'space-around',
         flexWrap: 'wrap',
         flexDirection: 'row',
-        alignSelf: 'center'
+        alignSelf: 'flex-start'
     },
     welcome: {
         fontSize: 30,
         textAlign: 'center',
     },
-    button: {
-        color: colorStyles.mediumIntenseColor,
-        height: 100, marginTop: 10
-    }
 });
 
 export default Home
