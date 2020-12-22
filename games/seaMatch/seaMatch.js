@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import colorStyles from '../../styles/colorStyles'
 import LottieView from 'lottie-react-native';
-import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 import { PinchGestureHandler, State } from 'react-native-gesture-handler'
 import * as Animatable from 'react-native-animatable';
 
 
-export default class TouchHand extends Component {
+export default class SeaMatch extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -21,19 +20,23 @@ export default class TouchHand extends Component {
     }
 
     componentDidMount() {
-        this.startTouch()
-        this.startTouch2();
+        this.startExplosion()
+        this.startFish();
         this.startTimer();
     }
 
     componentWillUnmount() {
+        this.cleanUp();
+    }
+
+    cleanUp() {
         clearInterval(this.state.timer);
     }
 
     startTimer() {
         this.state.timer = setInterval(() => {
             if (this.state.timeLeft < 1) {
-                clearInterval(this.state.timer);
+                this.cleanUp();
                 setTimeout(function () { this.props.navigation.navigate('GameOfLife') }.bind(this), 5000);
                 setTimeout(function () { this.props.navigation.navigate('Home') }.bind(this), 10000);
             }
@@ -42,22 +45,23 @@ export default class TouchHand extends Component {
             }
         }, 1000);
     }
-    startTouch() {
-        this.touchAnimation && this.touchAnimation.play();
+
+    startExplosion() {
+        this.explosionAnimation && this.explosionAnimation.play();
     }
 
-    endTouch() {
-        this.touchAnimation && this.touchAnimation.play(300, 300);
-        this.touchAnimation && this.touchAnimation.pause();
+    endExplosion() {
+        this.explosionAnimation && this.explosionAnimation.play(300, 300);
+        this.explosionAnimation && this.explosionAnimation.pause();
     }
 
-    startTouch2() {
-        this.touchAnimation2 && this.touchAnimation2.play();
+    startFish() {
+        this.fishAnimation && this.fishAnimation.play();
     }
 
-    endTouch2() {
-        this.touchAnimation2 && this.touchAnimation2.play(300, 300);
-        this.touchAnimation2 && this.touchAnimation2.pause();
+    endFish() {
+        this.fishAnimation && this.fishAnimation.play(300, 300);
+        this.fishAnimation && this.fishAnimation.pause();
     }
 
     onPinchStateChange(event) {
@@ -66,32 +70,31 @@ export default class TouchHand extends Component {
 
         if (event.nativeEvent.oldState === State.ACTIVE && event.nativeEvent.scale < this.state.pinchScaleThreshold) {
             this.setState({ isTransition: true, killedTimes: this.state.killedTimes + 1 });
-            this.startTouch2();
+            this.startFish();
             setTimeout(function () { this.setState({ isTransition: false }); this.startTouch(); }.bind(this), 1200);
         }
-
     }
 
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.textContainer}>
-                    <Text>Touch Hand</Text>
+                    <Text>Sea Match</Text>
                 </View>
                 <View style={styles.textContainer}>
-                    <Text style={styles.victoryText}>Score: {this.state.killedTimes}</Text>
-                    <Text style={styles.victoryText}>Time: {this.state.timeLeft}</Text>
+                    <Text style={styles.bigText}>Score: {this.state.killedTimes}</Text>
+                    <Text style={styles.bigText}>Time: {this.state.timeLeft}</Text>
                 </View>
                 <PinchGestureHandler
                     onHandlerStateChange={this.onPinchStateChange.bind(this)}>
                     <View style={styles.contentContainer}>
                         {this.state.isTransition === false ?
-                            <LottieView style={{ width: this.state.windowWidth * 1.5 }} source={require('../../styles/animations/touch/fish.json')} ref={touchAnimation2 => { this.touchAnimation2 = touchAnimation2; }} autoPlay /> :
-                            <LottieView style={{ width: this.state.windowWidth * 1 }} source={require('../../styles/animations/touch/explosion.json')} ref={touchAnimation => { this.touchAnimation = touchAnimation; }} />}
+                            <LottieView style={{ width: this.state.windowWidth * 1.5 }} source={require('../../styles/animations/pinch/fish.json')} ref={fishAnimation => { this.fishAnimation = fishAnimation; }} autoPlay /> :
+                            <LottieView style={{ width: this.state.windowWidth * 1 }} source={require('../../styles/animations/pinch/explosion.json')} ref={explosionAnimation => { this.explosionAnimation = explosionAnimation; }} />}
                     </View>
                 </PinchGestureHandler>
                 {this.state.timeLeft === 0 && <View style={styles.center}>
-                    <Animatable.Text style={styles.victoryText} animation="pulse" easing="ease-out" iterationCount="infinite">You won with {this.state.killedTimes}!</Animatable.Text>
+                    <Animatable.Text style={styles.bigText} animation="pulse" easing="ease-out" iterationCount="infinite">Your score {this.state.killedTimes}!</Animatable.Text>
                 </View>}
             </View >
         );
@@ -121,7 +124,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    victoryText: {
+    bigText: {
         fontSize: 32
     }
 })

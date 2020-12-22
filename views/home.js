@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import colorStyles from '../styles/colorStyles'
 
 function Home({ navigation }) {
@@ -10,9 +10,18 @@ function Home({ navigation }) {
             </View>
             <View style={styles.emptySpace}></View>
             <View style={styles.gamesContainer}>
-                <Button color={colorStyles.mediumIntenseColor} title="Game of Life" onPress={() => navigation.navigate('GameOfLife')}></Button>
-                <Button color={colorStyles.mediumIntenseColor} title="Card Match" onPress={() => navigation.navigate('CardMatch')}></Button>
-                <Button color={colorStyles.mediumIntenseColor} title="Touch Hand" onPress={() => navigation.navigate('TouchHand')}></Button>
+                <View color={styles.button}>
+                    <Button title="Game of Life" onPress={() => navigation.navigate('GameOfLife')}></Button>
+                </View>
+                <View color={styles.button}>
+                    <Button title="Card Match" onPress={() => navigation.navigate('CardMatch')}></Button>
+                </View>
+                <View color={styles.button}>
+                    <Button title="Pinch Fish" onPress={() => navigation.navigate('PinchFish')}></Button>
+                </View>
+                <View color={styles.button}>
+                    <Button title="Sea Match" onPress={() => navigation.navigate('SeaMatch')}></Button>
+                </View>
             </View>
         </View>
     );
@@ -35,12 +44,17 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignContent: 'space-around',
         flexWrap: 'wrap',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignSelf: 'center'
     },
     welcome: {
         fontSize: 30,
         textAlign: 'center',
     },
+    button: {
+        color: colorStyles.mediumIntenseColor,
+        height: 100, marginTop: 10
+    }
 });
 
 export default Home
