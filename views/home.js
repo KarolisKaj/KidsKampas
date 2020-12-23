@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import colorStyles from '../styles/colorStyles'
 
 function Home({ navigation }) {
