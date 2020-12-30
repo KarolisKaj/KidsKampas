@@ -4,7 +4,7 @@ import colorStyles from '../../styles/colorStyles'
 import Draggable from 'react-native-draggable';
 import { Square, Rectangle, Circle, Oval, Octagon, Trapezoid, Triangle, Hexagon, Pentagon } from 'react-native-shape';
 import * as Animatable from 'react-native-animatable';
-import getSound from '../../services/audioService';
+import playSound from '../../services/audioService';
 
 export default class SeaMatch extends Component {
     constructor(props) {
@@ -28,14 +28,20 @@ export default class SeaMatch extends Component {
     }
 
     componentDidMount() {
-        (async () => { this.state.wrongSound = await getSoundAsync(require('../../styles/assets/wrong_answer.wav')); })()
         this.createShapesMap()
         this.setState({ allShapes: this.createShapes(this.state.shapesMap) });
         this.state.timer = setInterval(() => {
             if (!this.state.gameFinished)
                 this.setState({ timeElapsed: this.state.timeElapsed + 1 })
         }, 1000);
-        (async () => { this.state.correctSound = await getSoundAsync(require('../../styles/assets/correct_answer.wav')); })()
+    }
+
+    playCorrectSound() {
+        playSound(require('../../styles/assets/correct_answer.wav'));
+    }
+
+    playWrongSound() {
+        playSound(require('../../styles/assets/wrong_answer.wav'));
     }
 
     componentWillUnmount() {
@@ -80,13 +86,13 @@ export default class SeaMatch extends Component {
                         if (shapeMap.slotStartX < gestureState.moveX && gestureState.moveX < (shapeMap.slotStartX + this.state.sizeOfShape)) {
                             if (shapeMap.slotStartY < gestureState.moveY && gestureState.moveY < (this.state.sizeOfShape + shapeMap.slotStartY)) {
                                 shapeMap.isMatched = true;
-                                (async () => await this.state.correctSound.sound.playAsync())()
+                                this.playCorrectSound();
                                 if (this.state.shapesMap.every(x => x.isMatched))
                                     this.finishGame();
                                 this.setState({ allShapes: this.createShapes(this.state.shapesMap) });
                             }
                             else {
-                                (async () => await this.state.wrongSound.sound.playAsync())()
+                                this.playWrongSound();
                             }
                         }
                     }).bind(this)} >
