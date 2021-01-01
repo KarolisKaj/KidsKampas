@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Card from './card.js'
+import playSound from '../../services/audioService';
+import soundFiles from '../../services/soundFileLocations'
 
 
 function generateBoard(size, notifyFlipped) {
@@ -51,6 +53,7 @@ export default class CardMatchBoard extends Component {
                         this.state.onFinished()
                     }
                 })
+                playSound(soundFiles.correctAnswerFile);
             }
             else {
                 this.state.boardLocked = true;
@@ -60,6 +63,7 @@ export default class CardMatchBoard extends Component {
                     this.setState({ cardFlipped: undefined })
                     this.state.boardLocked = false
                 }.bind(this), this.state.flipDelay);
+                playSound(soundFiles.wrongAnswerFile);
             }
 
         }
