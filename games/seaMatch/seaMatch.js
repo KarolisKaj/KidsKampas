@@ -5,7 +5,7 @@ import Draggable from 'react-native-draggable';
 import { Square, Rectangle, Circle, Oval, Octagon, Trapezoid, Triangle, Hexagon, Pentagon } from 'react-native-shape';
 import * as Animatable from 'react-native-animatable';
 import playSound from '../../services/audioService';
-import soundFiles from '../soundFileLocations'
+import soundFiles from '../../services/soundFileLocations'
 
 export default class SeaMatch extends Component {
     constructor(props) {
