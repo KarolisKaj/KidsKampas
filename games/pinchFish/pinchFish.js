@@ -4,6 +4,8 @@ import colorStyles from '../../styles/colorStyles'
 import LottieView from 'lottie-react-native';
 import { PinchGestureHandler, State } from 'react-native-gesture-handler'
 import * as Animatable from 'react-native-animatable';
+import playSound from '../../services/audioService';
+import soundFiles from '../../services/soundFileLocations'
 
 
 export default class PinchFish extends Component {
@@ -72,6 +74,7 @@ export default class PinchFish extends Component {
             this.setState({ isTransition: true, killedTimes: this.state.killedTimes + 1 });
             this.startFish();
             setTimeout(function () { this.setState({ isTransition: false }); this.startFish(); }.bind(this), 1200);
+            playSound(soundFiles.correctAnswerFile);
         }
     }
 
