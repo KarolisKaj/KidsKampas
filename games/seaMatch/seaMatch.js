@@ -5,6 +5,7 @@ import Draggable from 'react-native-draggable';
 import { Square, Rectangle, Circle, Oval, Octagon, Trapezoid, Triangle, Hexagon, Pentagon } from 'react-native-shape';
 import * as Animatable from 'react-native-animatable';
 import playSound from '../../services/audioService';
+import soundFiles from '../soundFileLocations'
 
 export default class SeaMatch extends Component {
     constructor(props) {
@@ -17,7 +18,7 @@ export default class SeaMatch extends Component {
             margin: 30,
             oneSpaceHeight: Dimensions.get('window').height / 7,
             colors: ['yellow', 'purple', 'black', 'red', 'blue', 'orange', 'magenta'],
-            shapes: [(color) => <Square color={color} />, (color) => <Rectangle color={color} />, (color) => <Circle color={color} />, (color) => <Hexagon color={color} />, (color) => <Octagon color={color} />, (color) => <Pentagon color={color} />],
+            shapes: [(color) => <Square color={color} />, (color) => <Rectangle color={color} />, (color) => <Circle color={color} />, (color) => <Hexagon color={color} />, (color) => <Octagon color={color} />, (color) => <Oval color={color} />],
             allShapes: undefined,
             shapesMap: undefined,
             timeElapsed: 0,
@@ -37,11 +38,11 @@ export default class SeaMatch extends Component {
     }
 
     playCorrectSound() {
-        playSound(require('../../styles/assets/correct_answer.wav'));
+        playSound(soundFiles.correctAnswerFile);
     }
 
     playWrongSound() {
-        playSound(require('../../styles/assets/wrong_answer.wav'));
+        playSound(soundFiles.wrongAnswerFile);
     }
 
     componentWillUnmount() {
@@ -116,7 +117,6 @@ export default class SeaMatch extends Component {
     render() {
         return (
             <View style={styles.container}>
-
                 <View style={styles.textContainer}>
                     <Text>Sea Match</Text>
                 </View>
@@ -146,7 +146,6 @@ const styles = StyleSheet.create({
     textContainer: {
         flex: 1,
         alignItems: 'center',
-        margin: 20
     },
     scoreContainer: {
         flex: 19,

@@ -1,8 +1,8 @@
 import { Audio } from 'expo-av';
 
-export default playSound = (location) => {
-    (async (location) => {
-        let soundObject = await Audio.Sound.createAsync(location);
+export default playSound = (file) => {
+    (async (file) => {
+        let soundObject = await Audio.Sound.createAsync(file);
         await soundObject.sound.playAsync()
-    })(location)
+    })(file)
 } 
